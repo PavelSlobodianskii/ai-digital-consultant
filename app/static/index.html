@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Digital Consultant</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <p class="eyebrow">Local · free · retrieval memory, not fine-tuning</p>
+      <h1>AI Digital Consultant</h1>
+      <p class="lede">Describe a process. Get a structured view of where automation belongs — and where an LLM does not.</p>
+    </div>
+    <div id="health" class="health" aria-live="polite"></div>
+  </header>
+
+  <main>
+    <section class="panel intake">
+      <h2>Process intake</h2>
+      <p class="hint">Start from an example, or paste a real operational problem.</p>
+      <div id="examples" class="examples"></div>
+
+      <form id="assess-form">
+        <label for="process_text">Business process or operational problem</label>
+        <textarea id="process_text" name="process_text" required minlength="20" rows="10" placeholder="Who does the work, what data they use, which systems, where it breaks, and what a good outcome looks like."></textarea>
+
+        <div class="grid">
+          <div>
+            <label for="industry">Industry (optional)</label>
+            <input id="industry" name="industry" type="text" />
+          </div>
+          <div>
+            <label for="volume_note">Volume / scale (optional)</label>
+            <input id="volume_note" name="volume_note" type="text" placeholder="e.g. 800 invoices / month" />
+          </div>
+        </div>
+        <label for="tools_note">Current tools (optional)</label>
+        <input id="tools_note" name="tools_note" type="text" />
+
+        <div class="grid">
+          <div>
+            <label for="data_shape">Data is mostly</label>
+            <select id="data_shape" name="data_shape">
+              <option value="unknown">Unknown — infer from the text</option>
+              <option value="structured">Structured (forms, ERP fields, lists)</option>
+              <option value="unstructured">Unstructured (email, PDFs, speech)</option>
+              <option value="mixed">Mixed</option>
+            </select>
+          </div>
+          <div>
+            <label for="judgment_level">Exceptions / judgment</label>
+            <select id="judgment_level" name="judgment_level">
+              <option value="unknown">Unknown — infer from the text</option>
+              <option value="rare">Rare — rules cover most cases</option>
+              <option value="frequent">Frequent — lots of interpretation</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" id="submit-btn">Run assessment</button>
+        <p id="form-error" class="error" hidden></p>
+      </form>
+    </section>
+
+    <section id="status" class="panel status" hidden></section>
+
+    <section id="result" class="result" hidden>
+      <div class="result-header">
+        <div>
+          <p class="eyebrow">Assessment</p>
+          <h2 id="class-title">Report</h2>
+        </div>
+        <div id="badges" class="badges"></div>
+      </div>
+      <div id="memory-banner" class="memory-banner" hidden></div>
+      <ol id="sections" class="sections"></ol>
+
+      <aside class="panel feedback-panel">
+        <h2>After you try a recommendation</h2>
+        <p class="hint">Feedback is stored locally in SQLite. It is retrieved for similar future cases. The model is not retrained.</p>
+        <div class="outcomes">
+          <button type="button" data-outcome="worked">Worked</button>
+          <button type="button" data-outcome="partial">Partially worked</button>
+          <button type="button" data-outcome="did_not_work">Did not work</button>
+        </div>
+        <form id="feedback-form" hidden>
+          <input type="hidden" id="outcome" name="outcome" />
+          <label for="implemented_what">What recommendation did you implement?</label>
+          <textarea id="implemented_what" required rows="2"></textarea>
+          <label for="what_worked">What worked?</label>
+          <textarea id="what_worked" rows="2"></textarea>
+          <label for="what_failed">What failed?</label>
+          <textarea id="what_failed" rows="2"></textarea>
+          <label for="why">Why?</label>
+          <textarea id="why" rows="2"></textarea>
+          <label for="alternative">What would you recommend instead? (optional)</label>
+          <textarea id="alternative" rows="2"></textarea>
+          <label class="check">
+            <input type="checkbox" id="company_specific" checked />
+            This lesson is specific to our company (systems, vendors, culture)
+          </label>
+          <button type="submit">Save feedback</button>
+          <p id="feedback-msg" class="hint" hidden></p>
+        </form>
+      </aside>
+    </section>
+  </main>
+
+  <footer>
+    <p>Deterministic rubric decides rules vs AI vs hybrid when the case is clear. Memory never overrides that gate.</p>
+  </footer>
+  <script src="/static/app.js"></script>
+</body>
+</html>
